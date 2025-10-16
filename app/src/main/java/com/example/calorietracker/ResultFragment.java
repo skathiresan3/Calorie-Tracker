@@ -25,10 +25,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import com.example.calorietracker.BuildConfig;
+
 
 public class ResultFragment extends Fragment {
 
-    private static final String OPENAI_API_KEY = "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";
+    private static final String OPENAI_API_KEY = BuildConfig.OPENAI_API_KEY;
     private TextView resultText;
     private ImageView previewImage;
 
