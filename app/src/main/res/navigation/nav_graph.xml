@@ -32,5 +32,16 @@
         android:id="@+id/PhotoSelectFragment"
         android:name="com.example.calorietracker.PhotoSelectFragment"
         android:label="PhotoSelectFragment"
-        tools:layout="@layout/fragment_photo_select" />
+        tools:layout="@layout/fragment_photo_select">
+        <action
+            android:id="@+id/action_photoSelectFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.example.calorietracker.ResultFragment"
+        android:label="Result"
+        tools:layout="@layout/fragment_result" />
 </navigation>

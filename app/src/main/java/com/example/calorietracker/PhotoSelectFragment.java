@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -89,7 +90,11 @@ public class PhotoSelectFragment extends Fragment {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             imageUri = data.getData();
-            Toast.makeText(requireContext(), "Photo selected!", Toast.LENGTH_SHORT).show();
+            Bundle bundle = new Bundle();
+            bundle.putString("imageUri", imageUri.toString());
+
+            NavHostFragment.findNavController(PhotoSelectFragment.this)
+                    .navigate(R.id.action_photoSelectFragment_to_resultFragment, bundle);
         }
     }
 }
