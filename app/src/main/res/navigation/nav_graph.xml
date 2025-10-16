@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_PhotoSelectFragment"
+            app:destination="@id/PhotoSelectFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -25,4 +28,9 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/PhotoSelectFragment"
+        android:name="com.example.calorietracker.PhotoSelectFragment"
+        android:label="PhotoSelectFragment"
+        tools:layout="@layout/fragment_photo_select" />
 </navigation>

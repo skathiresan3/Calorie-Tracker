@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment {
 
         binding.buttonFirst.setOnClickListener(v ->
                 NavHostFragment.findNavController(HomeFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment)
+                        .navigate(R.id.action_FirstFragment_to_PhotoSelectFragment)
         );
     }
 
