@@ -26,11 +26,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import com.example.calorietracker.BuildConfig;
+import android.util.Log;
 
 
 public class ResultFragment extends Fragment {
 
-    private static final String OPENAI_API_KEY = BuildConfig.OPENAI_API_KEY;
+    String OPENAI_API_KEY = BuildConfig.OPENAI_API_KEY;
+
     private TextView resultText;
     private ImageView previewImage;
 
@@ -38,9 +40,10 @@ public class ResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_result, container, false);
-
         resultText = view.findViewById(R.id.resultText);
         previewImage = view.findViewById(R.id.previewImage);
+
+        OPENAI_API_KEY = BuildConfig.OPENAI_API_KEY;
 
         if (getArguments() != null) {
             String imageUriString = getArguments().getString("imageUri");
