@@ -59,4 +59,6 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("org.json:json:20230618")
+    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation("com.google.firebase:firebase-database")
 }
