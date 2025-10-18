@@ -8,14 +8,19 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.chip.Chip;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,12 +43,20 @@ public class ResultFragment extends Fragment {
     private LinearLayout macroRow;
     private Chip proteinChip, carbsChip, fatChip;
 
+    // Feedback UI
+    private Button yesButton, noButton, submitFeedbackButton;
+    private EditText commentBox;
+    private LinearLayout commentContainer;
+
+    // Firebase reference
+    private DatabaseReference feedbackRef;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_result, container, false);
 
-        // UI refs
+        // --- Initialize UI components ---
         resultText = view.findViewById(R.id.resultText);
         previewImage = view.findViewById(R.id.previewImage);
         macroRow = view.findViewById(R.id.macroRow);
@@ -51,7 +64,38 @@ public class ResultFragment extends Fragment {
         carbsChip = view.findViewById(R.id.carbsChip);
         fatChip = view.findViewById(R.id.fatChip);
 
-        // Image from previous screen
+        yesButton = view.findViewById(R.id.yesButton);
+        noButton = view.findViewById(R.id.noButton);
+        submitFeedbackButton = view.findViewById(R.id.submitFeedbackButton);
+        commentBox = view.findViewById(R.id.commentBox);
+        commentContainer = view.findViewById(R.id.commentContainer);
+
+        // --- Firebase setup ---
+        feedbackRef = FirebaseDatabase.getInstance().getReference("feedback");
+
+        // --- Button functionality ---
+        yesButton.setOnClickListener(v -> {
+            saveFeedback(true, "");
+            disableFeedbackButtons();
+            Toast.makeText(getContext(), "Thanks for your feedback!", Toast.LENGTH_SHORT).show();
+        });
+
+        noButton.setOnClickListener(v -> {
+            commentContainer.setVisibility(View.VISIBLE);
+        });
+
+        submitFeedbackButton.setOnClickListener(v -> {
+            String comment = commentBox.getText().toString().trim();
+            if (comment.isEmpty()) {
+                Toast.makeText(getContext(), "Please enter a comment before submitting.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            saveFeedback(false, comment);
+            disableFeedbackButtons();
+            Toast.makeText(getContext(), "Thanks for your feedback!", Toast.LENGTH_SHORT).show();
+        });
+
+        // --- Handle passed image ---
         if (getArguments() != null) {
             String imageUriString = getArguments().getString("imageUri");
             if (imageUriString != null) {
@@ -64,12 +108,34 @@ public class ResultFragment extends Fragment {
         return view;
     }
 
+    // --- Disable buttons after feedback submitted ---
+    private void disableFeedbackButtons() {
+        yesButton.setEnabled(false);
+        noButton.setEnabled(false);
+        submitFeedbackButton.setEnabled(false);
+        commentBox.setEnabled(false);
+    }
+
+    // --- Save feedback to Firebase ---
+    private void saveFeedback(boolean wasAccurate, String comment) {
+        String feedbackId = feedbackRef.push().getKey();
+        Feedback feedback = new Feedback(wasAccurate, comment, System.currentTimeMillis());
+        if (feedbackId != null) {
+            feedbackRef.child(feedbackId).setValue(feedback)
+                    .addOnSuccessListener(aVoid -> {
+                        // Optional: success toast handled in click logic
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getContext(), "Failed to save feedback: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        }
+    }
+
+    // --- Analyze image with GPT ---
     private void analyzeImageWithGPT(Uri imageUri) {
         new Thread(() -> {
             try {
-                // Convert image to Base64
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(
-                        requireActivity().getContentResolver(), imageUri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                 byte[] imageBytes = stream.toByteArray();
@@ -77,25 +143,25 @@ public class ResultFragment extends Fragment {
 
                 OkHttpClient client = new OkHttpClient();
 
-                // Build message
                 JSONObject textPart = new JSONObject();
                 textPart.put("type", "text");
-                String prompt =
-                        "Analyze the food in this image and provide a calorie and macro estimate. " +
-                                "Do not include any introductory text or disclaimers. " +
-                                "Format it like this:\n\n" +
-                                "Analyzed Components:\n" +
-                                "- [Component 1]: ~[Calories], P:[X]g, C:[Y]g, F:[Z]g\n" +
-                                "- [Component 2]: ~[Calories], P:[X]g, C:[Y]g, F:[Z]g\n\n" +
-                                "Total Estimated Calories: ~[Number]\n\n" +
-                                "Total Macros:\n" +
-                                "- Protein: [X]g\n" +
-                                "- Carbs: [Y]g\n" +
-                                "- Fat: [Z]g";
+
+                String prompt = "Analyze the food in this image. Provide a calorie and macro estimate. Do not include any intro text, just the analysis. " +
+                        "Show how much each analyzed component contributed to the macro and calorie breakdown. " +
+                        "Format it like this:\n\n" +
+                        "- [Component 1]: ~[Calories], P:[X]g, C:[Y]g, F:[Z]g\n" +
+                        "- [Component 2]: ~[Calories], P:[X]g, C:[Y]g, F:[Z]g\n\n" +
+                        "Total Estimated Calories: ~[Number]\n\n" +
+                        "Total Macros:\n" +
+                        "- Protein: [X]g\n" +
+                        "- Carbs: [Y]g\n" +
+                        "- Fat: [Z]g";
+
                 textPart.put("text", prompt);
 
                 JSONObject imagePart = new JSONObject();
                 imagePart.put("type", "image_url");
+
                 JSONObject imageUrlObject = new JSONObject();
                 imageUrlObject.put("url", "data:image/jpeg;base64," + base64Image);
                 imagePart.put("image_url", imageUrlObject);
@@ -128,7 +194,10 @@ public class ResultFragment extends Fragment {
                         .build();
 
                 Response response = client.newCall(request).execute();
-                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                }
 
                 String responseString = response.body().string();
                 JSONObject jsonResponse = new JSONObject(responseString);
@@ -139,12 +208,10 @@ public class ResultFragment extends Fragment {
                         .getString("content");
 
                 requireActivity().runOnUiThread(() -> {
-                    // Fade in result
                     resultText.setText(output);
                     resultText.setAlpha(0f);
                     resultText.animate().alpha(1f).setDuration(600).start();
 
-                    // Try to populate chips
                     if (output.contains("Protein:") && output.contains("Carbs:") && output.contains("Fat:")) {
                         try {
                             macroRow.setVisibility(View.VISIBLE);
