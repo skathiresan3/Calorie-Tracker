@@ -90,9 +90,6 @@ The project was developed in multiple sprints throughout the semester as part of
 ---
 
 ## Technical Architecture  
-
-![System Architecture Diagram](architecture_diagram.png)  
-
 **Components:**
 - **Frontend (Android):**  
   - User interface for logging, receiving reminders, and viewing meal insights.
