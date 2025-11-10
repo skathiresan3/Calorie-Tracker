@@ -62,4 +62,5 @@ dependencies {
     implementation("org.json:json:20230618")
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-messaging")
 }
