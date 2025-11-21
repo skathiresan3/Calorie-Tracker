@@ -393,7 +393,7 @@ import okhttp3.Response;
 
 public class ResultFragment extends Fragment {
 
-    private String OPENAI_API_KEY = "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";
+    private String OPENAI_API_KEY = "add api here";
 
 
     private Uri imageUri;
