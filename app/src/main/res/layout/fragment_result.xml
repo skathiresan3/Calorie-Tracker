@@ -29,42 +29,20 @@
                 app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                 tools:src="@tools:sample/avatars" />
 
-            <TextView
-                android:id="@+id/havingLabelTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="It looks like you're having:"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mealImageView" />
-
             <!-- Meal Name -->
-            <TextView
-                android:id="@+id/mealNameTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="Grilled chicken with rice and broccoli."
-                android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/havingLabelTextView" />
 
 
             <LinearLayout
                 android:id="@+id/nutritionLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="32dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mealNameTextView">
+                app:layout_constraintTop_toBottomOf="@+id/mealImageView">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -165,7 +143,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
 
             <TextView
                 android:id="@+id/portionLabelTextView"
