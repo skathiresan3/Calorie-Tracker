@@ -3,45 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/HomeFragment">
 
+    <!-- This is your HomeFragment definition -->
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/HomeFragment"
         android:name="com.example.calorietracker.HomeFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/home_fragment_label"
         tools:layout="@layout/home_fragment">
 
+        <!-- ADD THIS ACTION INSIDE YOUR HomeFragment TAG -->
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_PhotoSelectFragment"
-            app:destination="@id/PhotoSelectFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.calorietracker.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+            android:id="@+id/action_HomeFragment_to_photoSelectFragment"
+            app:destination="@id/photoSelectFragment" />
 
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
     </fragment>
+
     <fragment
-        android:id="@+id/PhotoSelectFragment"
+        android:id="@+id/photoSelectFragment"
         android:name="com.example.calorietracker.PhotoSelectFragment"
-        android:label="PhotoSelectFragment"
+        android:label="Select Photo"
         tools:layout="@layout/fragment_photo_select">
         <action
             android:id="@+id/action_photoSelectFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
     </fragment>
 
-
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.example.calorietracker.ResultFragment"
         android:label="Result"
-        tools:layout="@layout/fragment_result" />
+        tools:layout="@layout/fragment_result">
+        <argument
+            android:name="imageUri"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
 </navigation>

@@ -8,7 +8,7 @@
     <string name="previous">Previous</string>
     <string name="analyze_your_meal">Analyze Your Meal</string>
 
-
+    <string name="home_fragment_label">Home</string>
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus

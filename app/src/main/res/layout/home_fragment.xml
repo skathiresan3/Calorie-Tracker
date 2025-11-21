@@ -1,56 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
     tools:context=".HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <!-- Circular Progress Bar -->
+
+    <!-- Text inside the progress bar -->
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="4dp"
+        android:indeterminate="false"
+        android:max="2000"
+        android:progress="1200"
+        android:progressDrawable="@drawable/progress_bar_circular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/caloriesRemainingLabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:text="Calories Remaining"
+        android:textSize="7sp"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        app:layout_constraintBottom_toTopOf="@id/caloriesRemainingValue"
+        app:layout_constraintEnd_toEndOf="@id/progressBar"
+        app:layout_constraintStart_toStartOf="@id/progressBar"
+        app:layout_constraintTop_toTopOf="@id/progressBar"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-        <Button
-            android:id="@+id/button_first"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:backgroundTint="#4DB6AC"
-            android:text="@string/analyze_your_meal"
-            android:textSize="25sp"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.515"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.696" />
+    <TextView
+        android:id="@+id/caloriesRemainingValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1,200"
+        android:textAppearance="?attr/textAppearanceHeadlineLarge"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/progressBar"
+        app:layout_constraintEnd_toEndOf="@id/progressBar"
+        app:layout_constraintStart_toStartOf="@id/progressBar"
+        app:layout_constraintTop_toBottomOf="@id/caloriesRemainingLabel" />
 
+    <!-- Guideline to separate the top and bottom sections -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <!-- Nutrient Grid -->
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar">
+
+        <!-- Protein -->
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="325dp"
-            android:layout_height="wrap_content"
-            android:text="Estimate Calories"
-            android:textSize="40dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/button_first"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.538" />
-
-        <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/proteinValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="with a snap"
-            android:textSize="40dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.378"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            android:text="80g"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textStyle="bold" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Protein remaining" />
+
+        <!-- Carbs -->
+        <TextView
+            android:id="@+id/carbsValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="150g"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carbs remaining" />
+
+        <!-- Fat -->
+        <TextView
+            android:id="@+id/fatValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="45g"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fat remaining" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:text="Analyze Your Meal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,215 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#F9FAFB">
+    tools:context=".ResultFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        android:id="@+id/mainContentScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <!-- Header -->
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Meal Analysis"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="#111827"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:padding="24dp">
 
-        <!-- Image Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/imageCard"
-            android:layout_width="0dp"
-            android:layout_height="280dp"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="6dp"
-            app:layout_constraintTop_toBottomOf="@id/titleText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <ImageView
-                android:id="@+id/previewImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/mealImageView"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:scaleType="centerCrop"
-                android:contentDescription="Analyzed food image" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Result Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/resultCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/imageCard"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:id="@+id/resultText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Analyzing meal..."
-                    android:textColor="#374151"
-                    android:textSize="16sp"
-                    android:lineSpacingExtra="4dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Macro Chips Row -->
-        <LinearLayout
-            android:id="@+id/macroRow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/resultCard"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/proteinChip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Protein: 0g"
-                android:textColor="#ffffff"
-                app:chipBackgroundColor="#10B981"
-                android:textSize="14sp"
-                android:layout_marginEnd="6dp" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/carbsChip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Carbs: 0g"
-                android:textColor="#ffffff"
-                app:chipBackgroundColor="#3B82F6"
-                android:textSize="14sp"
-                android:layout_marginEnd="6dp" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/fatChip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fat: 0g"
-                android:textColor="#ffffff"
-                app:chipBackgroundColor="#F59E0B"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <!-- Feedback Section -->
-        <LinearLayout
-            android:id="@+id/feedbackSection"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:padding="12dp"
-            app:layout_constraintTop_toBottomOf="@id/macroRow"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                tools:src="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/feedbackPrompt"
+                android:id="@+id/havingLabelTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Did you feel this was accurate?"
-                android:textColor="#111827"
-                android:textSize="16sp"
+                android:layout_marginTop="24dp"
+                android:text="It looks like you're having:"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mealImageView" />
+
+            <!-- Meal Name -->
+            <TextView
+                android:id="@+id/mealNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Grilled chicken with rice and broccoli."
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/havingLabelTextView" />
+
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/nutritionLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:gravity="center">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mealNameTextView">
 
-                <Button
-                    android:id="@+id/yesButton"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Yes"
-                    android:backgroundTint="#10B981"
-                    android:textColor="#ffffff"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/noButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No"
-                    android:backgroundTint="#EF4444"
-                    android:textColor="#ffffff" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/calorieTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        tools:text="820" />
 
-            <!-- Inline styled feedback box (only visible after 'No') -->
-            <LinearLayout
-                android:id="@+id/commentContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:visibility="gone"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <EditText
-                    android:id="@+id/commentBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Tell us what felt off..."
-                    android:background="@null"
-                    android:padding="12dp"
-                    android:layout_margin="4dp"
-                    android:textColor="#111827"
-                    android:textColorHint="#9CA3AF"
-                    android:inputType="textMultiLine"
-                    android:minHeight="80dp"
-                    android:backgroundTint="#E5E7EB"
-                    android:elevation="2dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="kcal"
+                        android:textAppearance="?attr/textAppearanceBodyMedium" />
+                </LinearLayout>
 
                 <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#E5E7EB"
-                    android:layout_marginTop="-4dp"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/listDivider" />
 
-                <Button
-                    android:id="@+id/submitFeedbackButton"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/proteinTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textStyle="bold"
+                            tools:text="40g" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Protein" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/carbsTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textStyle="bold"
+                            tools:text="50g" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Carbs" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/fatTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textStyle="bold"
+                            tools:text="15g" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fat" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/portionLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:textSize="10sp"
+                android:text="Portion Size"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nutritionLayout" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/portionSlider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:stepSize="1.0"
+                android:value="2.0"
+                android:valueFrom="1.0"
+                android:valueTo="3.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/portionLabelTextView" />
+
+
+            <TextView
+                android:id="@+id/addIngredientsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textSize="10sp"
+                android:text="Add Ingredients:"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/portionSlider" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Add"
+                app:layout_constraintBottom_toBottomOf="@id/addIngredientsLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/addIngredientsLabel" />
+
+            <TextView
+                android:id="@+id/ingredientsList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_ingredient_list"
+                android:padding="12dp"
+                android:text="Olive Oil (1 tbsp)"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addButton" />
+
+            <LinearLayout
+                android:id="@+id/feedbackButtonsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ingredientsList">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/likeButton"
+                    style="@style/Widget.App.Button.IconOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Submit Feedback"
-                    android:backgroundTint="#3B82F6"
-                    android:textColor="#FFFFFF"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_marginEnd="16dp"
+                    app:icon="@drawable/ic_thumb_up" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dislikeButton"
+                    style="@style/Widget.App.Button.IconOnly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_thumb_down" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/feedbackLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Was this result accurate?"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/feedbackButtonsLayout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/thankYouLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/colorBackground"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ImageView
+            android:id="@+id/checkMark"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_check_circle"
+            app:layout_constraintBottom_toTopOf="@id/thankYouTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/thankYouTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="Thank you for your feedback!"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/thankYouButtonsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thankYouTextView">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/analyzeAnotherButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Analyze Another Meal" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/backToHomeButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Back to Home" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".PhotoSelectFragment">
 
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/uploadPhotoButton"
         android:layout_width="136dp"
@@ -21,11 +22,12 @@
         app:iconSize="48dp"
         app:iconTint="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.303"
+        app:layout_constraintVertical_bias="0.38"
         app:rippleColor="@color/teal_200" />
 
     <TextView
@@ -34,10 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Upload a Photo"
-        android:textSize="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uploadPhotoButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
