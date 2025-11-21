@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -122,49 +123,64 @@
         </LinearLayout>
 
         <!-- Feedback Section -->
+        <Button
+            android:id="@+id/saveMealButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:text="Save Meal"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/macroRow"
+            app:layout_constraintVertical_bias="0.123" />
+
         <LinearLayout
             android:id="@+id/feedbackSection"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="92dp"
             android:gravity="center"
-            android:layout_marginTop="20dp"
+            android:orientation="vertical"
             android:padding="12dp"
-            app:layout_constraintTop_toBottomOf="@id/macroRow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/macroRow">
 
             <TextView
                 android:id="@+id/feedbackPrompt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="Did you feel this was accurate?"
                 android:textColor="#111827"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/yesButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Yes"
+                    android:layout_marginEnd="8dp"
                     android:backgroundTint="#10B981"
-                    android:textColor="#ffffff"
-                    android:layout_marginEnd="8dp" />
+                    android:text="Yes"
+                    android:textColor="#ffffff" />
 
                 <Button
                     android:id="@+id/noButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="No"
                     android:backgroundTint="#EF4444"
+                    android:text="No"
                     android:textColor="#ffffff" />
             </LinearLayout>
 
@@ -174,40 +190,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/commentBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tell us what felt off..."
-                    android:background="@null"
-                    android:padding="12dp"
                     android:layout_margin="4dp"
-                    android:textColor="#111827"
-                    android:textColorHint="#9CA3AF"
+                    android:background="@null"
+                    android:backgroundTint="#E5E7EB"
+                    android:elevation="2dp"
+                    android:hint="Tell us what felt off..."
                     android:inputType="textMultiLine"
                     android:minHeight="80dp"
-                    android:backgroundTint="#E5E7EB"
-                    android:elevation="2dp" />
+                    android:padding="12dp"
+                    android:textColor="#111827"
+                    android:textColorHint="#9CA3AF" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#E5E7EB"
                     android:layout_marginTop="-4dp"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="8dp"
+                    android:background="#E5E7EB" />
 
                 <Button
                     android:id="@+id/submitFeedbackButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Submit Feedback"
+                    android:layout_gravity="center_horizontal"
                     android:backgroundTint="#3B82F6"
-                    android:textColor="#FFFFFF"
-                    android:layout_gravity="center_horizontal" />
+                    android:text="Submit Feedback"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
         </LinearLayout>
 
