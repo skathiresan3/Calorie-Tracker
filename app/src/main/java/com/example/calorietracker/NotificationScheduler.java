@@ -22,16 +22,14 @@ public class NotificationScheduler extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Calorie Tracker";
             String description = "Channel for Calorie Tracker notifications";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
+
             notificationManager.createNotificationChannel(channel);
         }
 
@@ -51,7 +49,6 @@ public class NotificationScheduler extends BroadcastReceiver {
     public static void scheduleNotifications(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        // Lunch Notification
         Intent lunchIntent = new Intent(context, NotificationScheduler.class);
         lunchIntent.putExtra("title", "Lunch Time!");
         lunchIntent.putExtra("message", "Time to get on app and log lunch");
@@ -63,14 +60,12 @@ public class NotificationScheduler extends BroadcastReceiver {
         lunchCalendar.set(Calendar.MINUTE, 0);
         lunchCalendar.set(Calendar.SECOND, 0);
 
-        // if it's already past 12 PM, schedule for tomorrow
         if (Calendar.getInstance().after(lunchCalendar)) {
             lunchCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, lunchCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, lunchPendingIntent);
 
-        // Dinner Notification
         Intent dinnerIntent = new Intent(context, NotificationScheduler.class);
         dinnerIntent.putExtra("title", "Dinner Time!");
         dinnerIntent.putExtra("message", "Time to get on app and log dinner");
@@ -82,7 +77,6 @@ public class NotificationScheduler extends BroadcastReceiver {
         dinnerCalendar.set(Calendar.MINUTE, 0);
         dinnerCalendar.set(Calendar.SECOND, 0);
 
-        // if it's already past 7 PM, schedule for tomorrow
         if (Calendar.getInstance().after(dinnerCalendar)) {
             dinnerCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }

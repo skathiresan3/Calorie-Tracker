@@ -12,9 +12,6 @@
     android:padding="24dp"
     tools:context=".HomeFragment">
 
-    <!-- Circular Progress Bar -->
-
-    <!-- Text inside the progress bar -->
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -56,7 +53,6 @@
         app:layout_constraintStart_toStartOf="@id/progressBar"
         app:layout_constraintTop_toBottomOf="@id/caloriesRemainingLabel" />
 
-    <!-- Guideline to separate the top and bottom sections -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -64,7 +60,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
-    <!-- Nutrient Grid -->
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -77,7 +72,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar">
 
-        <!-- Protein -->
         <TextView
             android:id="@+id/proteinValue"
             android:layout_width="wrap_content"
@@ -92,7 +86,6 @@
             android:layout_height="wrap_content"
             android:text="Protein remaining" />
 
-        <!-- Carbs -->
         <TextView
             android:id="@+id/carbsValue"
             android:layout_width="wrap_content"
@@ -108,7 +101,6 @@
             android:layout_height="wrap_content"
             android:text="Carbs remaining" />
 
-        <!-- Fat -->
         <TextView
             android:id="@+id/fatValue"
             android:layout_width="wrap_content"
@@ -135,6 +127,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="88dp"
+        android:backgroundTint="#FF0000"
+        android:text="Log Out"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/historyButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="View Past Meals"
+        app:layout_constraintBottom_toTopOf="@+id/logoutButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_first" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

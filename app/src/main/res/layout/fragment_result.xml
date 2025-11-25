@@ -29,9 +29,6 @@
                 app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                 tools:src="@tools:sample/avatars" />
 
-            <!-- Meal Name -->
-
-
             <LinearLayout
                 android:id="@+id/nutritionLayout"
                 android:layout_width="0dp"
@@ -50,7 +47,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
-
                     <TextView
                         android:id="@+id/calorieTextView"
                         android:layout_width="wrap_content"
@@ -59,7 +55,6 @@
                         android:textColor="?attr/colorPrimary"
                         android:textStyle="bold"
                         tools:text="820" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -85,7 +80,6 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
-
                         <TextView
                             android:id="@+id/proteinTextView"
                             android:layout_width="wrap_content"
@@ -93,7 +87,6 @@
                             android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textStyle="bold"
                             tools:text="40g" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -106,7 +99,6 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
-
                         <TextView
                             android:id="@+id/carbsTextView"
                             android:layout_width="wrap_content"
@@ -114,7 +106,6 @@
                             android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textStyle="bold"
                             tools:text="50g" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -127,7 +118,6 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
-
                         <TextView
                             android:id="@+id/fatTextView"
                             android:layout_width="wrap_content"
@@ -135,7 +125,6 @@
                             android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textStyle="bold"
                             tools:text="15g" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -168,51 +157,66 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/portionLabelTextView" />
 
-
-            <TextView
-                android:id="@+id/addIngredientsLabel"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/mealNameInput"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:textSize="10sp"
-                android:text="Add Ingredients:"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:background="@android:drawable/editbox_background_normal"
+                android:hint="Meal Name (e.g. Chicken Salad)"
+                android:inputType="textCapWords"
+                android:padding="12dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/portionSlider" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/addButton"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+ Add"
-                app:layout_constraintBottom_toBottomOf="@id/addIngredientsLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/addIngredientsLabel" />
-
-            <TextView
-                android:id="@+id/ingredientsList"
-                android:layout_width="0dp"
+                android:id="@+id/saveMealButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/bg_ingredient_list"
-                android:padding="12dp"
-                android:text="Olive Oil (1 tbsp)"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:backgroundTint="#000000"
+                android:text="Save Meal"
+                android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addButton" />
+                app:layout_constraintTop_toBottomOf="@id/mealNameInput" />
+
+            <EditText
+                android:id="@+id/commentInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="@android:drawable/editbox_background_normal"
+                android:hint="Add a comment about this analysis..."
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/saveMealButton" />
+
+            <TextView
+                android:id="@+id/feedbackLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Was this accurate?"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/commentInput" />
 
             <LinearLayout
                 android:id="@+id/feedbackButtonsLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ingredientsList">
+                app:layout_constraintTop_toBottomOf="@id/feedbackLabelTextView">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/likeButton"
@@ -229,17 +233,6 @@
                     android:layout_height="wrap_content"
                     app:icon="@drawable/ic_thumb_down" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/feedbackLabelTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Was this result accurate?"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/feedbackButtonsLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -301,7 +294,6 @@
                 android:text="Back to Home" />
 
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
