@@ -43,7 +43,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ResultFragment extends Fragment {
-    private String OPENAI_API_KEY = "add your api key here";
+    private String OPENAI_API_KEY = "";
     private Uri imageUri;
     private NutritionViewModel nutritionViewModel;
 
@@ -69,20 +69,18 @@ public class ResultFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         if (getArguments() != null) {
-            // Check if we are coming from History
-            if (getArguments().containsKey("isHistoryView")) {
-                isHistoryView = getArguments().getBoolean("isHistoryView");
+            String uriString = getArguments().getString("imageUri");
+            if (uriString != null) {
+                imageUri = Uri.parse(uriString);
+            }
+
+            isHistoryView = getArguments().getBoolean("isHistoryView", false);
+
+            if (isHistoryView) {
                 fetchedCalories = getArguments().getInt("calories");
                 fetchedProtein = getArguments().getInt("protein");
                 fetchedCarbs = getArguments().getInt("carbs");
                 fetchedFat = getArguments().getInt("fat");
-                // Name might need to be set in onViewCreated since view isn't ready
-            } else {
-                // Normal flow (Photo)
-                String uriString = getArguments().getString("imageUri");
-                if (uriString != null) {
-                    imageUri = Uri.parse(uriString);
-                }
             }
         }
     }
@@ -112,12 +110,9 @@ public class ResultFragment extends Fragment {
         carbsTextView = mainContent.findViewById(R.id.carbsTextView);
         fatTextView = mainContent.findViewById(R.id.fatTextView);
 
-        // --- LOGIC SPLIT ---
         if (isHistoryView) {
-            // Hide image view if we don't have one, or show a placeholder
             mealImageView.setImageResource(R.drawable.ic_launcher_foreground); // Use a generic icon
 
-            // Set values immediately
             calorieTextView.setText(String.valueOf(fetchedCalories));
             proteinTextView.setText(fetchedProtein + "g");
             carbsTextView.setText(fetchedCarbs + "g");
@@ -127,12 +122,10 @@ public class ResultFragment extends Fragment {
                 mealNameInput.setText(getArguments().getString("mealName", ""));
             }
 
-            // Change "Save" to "Log Again"
             saveMealButton.setText("Log This Meal Again");
             setButtonsEnabled(true);
 
         } else {
-            // Normal Flow
             if (imageUri != null) {
                 mealImageView.setImageURI(imageUri);
                 analyzeImageWithGPT(imageUri);
@@ -149,8 +142,6 @@ public class ResultFragment extends Fragment {
             if (currentUser == null) return;
 
             if (fetchedCalories > 0) {
-                // If history view, we are logging it as a NEW entry for today
-                // If normal view, we are updating the name or saving for first time
 
                 if (isHistoryView) {
                     // Log as NEW meal for today
@@ -165,7 +156,6 @@ public class ResultFragment extends Fragment {
                             .addOnSuccessListener(a -> Toast.makeText(getContext(), "Logged Again!", Toast.LENGTH_SHORT).show());
 
                 } else {
-                    // Existing logic for Scan flow
                     if (currentMealId != null) {
                         String customName = mealNameInput.getText().toString().trim();
                         if (!customName.isEmpty()) {
@@ -180,7 +170,6 @@ public class ResultFragment extends Fragment {
             }
         });
 
-        // ... feedback logic same as before ...
         View.OnClickListener feedbackClickListener = v -> {
             boolean isLike = (v.getId() == R.id.likeButton);
             saveFeedbackToFirebase(isLike);
@@ -202,11 +191,8 @@ public class ResultFragment extends Fragment {
         return view;
     }
 
-    // ... rest of your methods (analyze, parse, saveFeedback, etc.) ...
 
     private void analyzeImageWithGPT(Uri imageUri) {
-        // ... your existing GPT logic ...
-        // (Keep exactly as is)
         new Thread(() -> {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
@@ -281,7 +267,6 @@ public class ResultFragment extends Fragment {
     }
 
     private void parseAndAutoSave(String output) {
-        // ... your existing parse logic ...
         int c = extractInt(output, "CALORIES:");
         int p = extractInt(output, "PROTEIN:");
         int carbs = extractInt(output, "CARBS:");
@@ -305,7 +290,6 @@ public class ResultFragment extends Fragment {
     }
 
     private void fetchDataFromFirebaseAndUpdateUI(DatabaseReference ref) {
-        // ... your existing fetch logic ...
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -333,7 +317,6 @@ public class ResultFragment extends Fragment {
     }
 
     private void saveFeedbackToFirebase(boolean isLike) {
-        // ... your existing feedback logic ...
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
@@ -345,7 +328,6 @@ public class ResultFragment extends Fragment {
         String userComment = commentInput.getText().toString().trim();
         String finalComment = userComment.isEmpty() ? (isLike ? "Liked" : "Disliked") : userComment;
 
-        // POINT TO: users -> userId -> feedback
         DatabaseReference userFeedbackRef = FirebaseDatabase.getInstance()
                 .getReference("users").child(userId).child("feedback");
 
@@ -357,7 +339,6 @@ public class ResultFragment extends Fragment {
     }
 
     private int extractInt(String text, String key) {
-        // ... existing helper ...
         try {
             if (text.contains(key)) {
                 String temp = text.split(key)[1].trim();
@@ -370,7 +351,6 @@ public class ResultFragment extends Fragment {
     }
 
     private void setButtonsEnabled(boolean enabled) {
-        // ... existing helper ...
         if (likeButton != null) likeButton.setEnabled(enabled);
         if (dislikeButton != null) dislikeButton.setEnabled(enabled);
         if (saveMealButton != null) saveMealButton.setEnabled(enabled);
