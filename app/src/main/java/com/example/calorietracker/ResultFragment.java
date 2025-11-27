@@ -153,7 +153,10 @@ public class ResultFragment extends Fragment {
 
                     Meal meal = new Meal(name, fetchedCalories, fetchedProtein, fetchedCarbs, fetchedFat, System.currentTimeMillis());
                     userMealsRef.push().setValue(meal)
-                            .addOnSuccessListener(a -> Toast.makeText(getContext(), "Logged Again!", Toast.LENGTH_SHORT).show());
+                            .addOnSuccessListener(a -> {
+                                Toast.makeText(getContext(), "Logged Again!", Toast.LENGTH_SHORT).show();
+                                updateStreak();
+                            });
 
                 } else {
                     if (currentMealId != null) {
@@ -164,6 +167,7 @@ public class ResultFragment extends Fragment {
                             userMealsRef.child(currentMealId).child("name").setValue(customName);
                         }
                         Toast.makeText(getContext(), "Meal Updated!", Toast.LENGTH_SHORT).show();
+                        updateStreak();
                     }
                 }
                 saveMealButton.setEnabled(false);
@@ -286,6 +290,7 @@ public class ResultFragment extends Fragment {
 
         newRef.setValue(meal).addOnSuccessListener(aVoid -> {
             fetchDataFromFirebaseAndUpdateUI(newRef);
+            updateStreak();
         });
     }
 
@@ -356,5 +361,68 @@ public class ResultFragment extends Fragment {
         if (saveMealButton != null) saveMealButton.setEnabled(enabled);
         if (commentInput != null) commentInput.setEnabled(enabled);
         if (mealNameInput != null) mealNameInput.setEnabled(enabled);
+    }
+
+    private void updateStreak() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) return;
+
+        DatabaseReference statsRef = FirebaseDatabase.getInstance()
+                .getReference("users").child(user.getUid()).child("stats");
+
+        statsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserStats stats = snapshot.getValue(UserStats.class);
+                if (stats == null) stats = new UserStats();
+
+                String today = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(new java.util.Date());
+
+                if (stats.lastLogDate.equals(today)) {
+                    return;
+                }
+
+                // Calculate yesterday's date
+                java.util.Calendar cal = java.util.Calendar.getInstance();
+                cal.add(java.util.Calendar.DATE, -1);
+                String yesterday = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(cal.getTime());
+
+                if (stats.lastLogDate.equals(yesterday)) {
+                    // Streak continues!
+                    stats.currentStreak++;
+                } else {
+                    // Streak broken (missed more than 1 day) or first time
+                    stats.currentStreak = 1;
+                }
+
+                // Update other stats
+                stats.totalDaysLogged++;
+                if (stats.currentStreak > stats.longestStreak) {
+                    stats.longestStreak = stats.currentStreak;
+                }
+                stats.lastLogDate = today;
+
+                // Save back to Firebase
+                statsRef.setValue(stats);
+
+                // CHECK FOR CELEBRATION
+                if (stats.currentStreak % 7 == 0) { // Every 7 days
+                    showCelebrationDialog(stats.currentStreak);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+    private void showCelebrationDialog(int days) {
+        if (getActivity() == null) return;
+        getActivity().runOnUiThread(() -> {
+            new android.app.AlertDialog.Builder(getContext())
+                    .setTitle("🔥 STREAK ON FIRE! 🔥")
+                    .setMessage("Great Job! You've hit a " + days + "-Day Streak!")
+                    .setPositiveButton("Keep it up!", null)
+                    .show();
+        });
     }
 }
