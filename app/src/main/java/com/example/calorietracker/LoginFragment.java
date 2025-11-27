@@ -57,12 +57,20 @@ public class LoginFragment extends Fragment {
             Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
+        loginButton.setEnabled(false);
+        loginButton.setText("Logging in...");
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).incrementUserLoginCount();
+                        }
                         NavHostFragment.findNavController(this).navigate(R.id.action_LoginFragment_to_HomeFragment);
                     } else {
+                        loginButton.setEnabled(true);
+                        loginButton.setText("Login");
+
                         Toast.makeText(getContext(), "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

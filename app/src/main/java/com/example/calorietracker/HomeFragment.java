@@ -68,7 +68,6 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    // ... rest of existing code ...
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

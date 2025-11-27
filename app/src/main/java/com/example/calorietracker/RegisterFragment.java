@@ -31,7 +31,6 @@ public class RegisterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Ensure this layout matches the ID of the XML file you have open (fragment_register)
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         emailEditText = view.findViewById(R.id.emailEditText);

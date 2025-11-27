@@ -51,16 +51,15 @@ public class MealHistoryFragment extends Fragment {
         adapter = new MealAdapter();
         recyclerView.setAdapter(adapter);
 
-        // Handle click to re-open meal details
         adapter.setOnMealClickListener(meal -> {
             Bundle bundle = new Bundle();
-            // Pass data to ResultFragment manually since we aren't analyzing an image
+
             bundle.putString("mealName", meal.getName());
             bundle.putInt("calories", (int) meal.getCalories());
             bundle.putInt("protein", (int) meal.getProtein());
             bundle.putInt("carbs", (int) meal.getCarbs());
             bundle.putInt("fat", (int) meal.getFat());
-            bundle.putBoolean("isHistoryView", true); // Flag to tell ResultFragment not to run GPT
+            bundle.putBoolean("isHistoryView", true);
 
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_MealHistoryFragment_to_ResultFragment, bundle);
@@ -89,7 +88,6 @@ public class MealHistoryFragment extends Fragment {
                     }
                 }
 
-                // Reverse to show newest first
                 Collections.reverse(mealList);
 
                 if (mealList.isEmpty()) {
