@@ -22,6 +22,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.slider.LabelFormatter;
+import com.google.android.material.slider.Slider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,15 +53,20 @@ public class ResultFragment extends Fragment {
     private MaterialButton likeButton, dislikeButton, saveMealButton;
     private EditText commentInput;
     private EditText mealNameInput;
+    private Slider portionSlider;
 
     private int fetchedCalories = 0;
     private int fetchedProtein = 0;
     private int fetchedCarbs = 0;
     private int fetchedFat = 0;
+
+    private int baseCalories = 0;
+    private int baseProtein = 0;
+    private int baseCarbs = 0;
+    private int baseFat = 0;
+
     private String currentMealId;
-
     private boolean isHistoryView = false;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -81,6 +88,11 @@ public class ResultFragment extends Fragment {
                 fetchedProtein = getArguments().getInt("protein");
                 fetchedCarbs = getArguments().getInt("carbs");
                 fetchedFat = getArguments().getInt("fat");
+
+                baseCalories = fetchedCalories;
+                baseProtein = fetchedProtein;
+                baseCarbs = fetchedCarbs;
+                baseFat = fetchedFat;
             }
         }
     }
@@ -98,6 +110,7 @@ public class ResultFragment extends Fragment {
         likeButton = mainContent.findViewById(R.id.likeButton);
         dislikeButton = mainContent.findViewById(R.id.dislikeButton);
         saveMealButton = mainContent.findViewById(R.id.saveMealButton);
+        portionSlider = mainContent.findViewById(R.id.portionSlider); // Bind slider
 
         commentInput = mainContent.findViewById(R.id.commentInput);
         mealNameInput = mainContent.findViewById(R.id.mealNameInput);
@@ -110,13 +123,29 @@ public class ResultFragment extends Fragment {
         carbsTextView = mainContent.findViewById(R.id.carbsTextView);
         fatTextView = mainContent.findViewById(R.id.fatTextView);
 
-        if (isHistoryView) {
-            mealImageView.setImageResource(R.drawable.ic_launcher_foreground); // Use a generic icon
+        portionSlider.setLabelFormatter(value -> {
+            if (value == 1.0f) return "Small";
+            if (value == 2.0f) return "Regular";
+            if (value == 3.0f) return "Large";
+            return String.valueOf(value);
+        });
 
-            calorieTextView.setText(String.valueOf(fetchedCalories));
-            proteinTextView.setText(fetchedProtein + "g");
-            carbsTextView.setText(fetchedCarbs + "g");
-            fatTextView.setText(fetchedFat + "g");
+        portionSlider.addOnChangeListener((slider, value, fromUser) -> {
+            float multiplier = 1.0f;
+            if (value == 1.0f) multiplier = 0.5f;
+            else if (value == 3.0f) multiplier = 1.5f;
+
+            fetchedCalories = (int) (baseCalories * multiplier);
+            fetchedProtein = (int) (baseProtein * multiplier);
+            fetchedCarbs = (int) (baseCarbs * multiplier);
+            fetchedFat = (int) (baseFat * multiplier);
+
+            updateNutritionUI();
+        });
+
+        if (isHistoryView) {
+            mealImageView.setImageResource(R.drawable.ic_launcher_foreground);
+            updateNutritionUI();
 
             if (getArguments() != null) {
                 mealNameInput.setText(getArguments().getString("mealName", ""));
@@ -142,14 +171,12 @@ public class ResultFragment extends Fragment {
             if (currentUser == null) return;
 
             if (fetchedCalories > 0) {
+                DatabaseReference userMealsRef = FirebaseDatabase.getInstance()
+                        .getReference("users").child(currentUser.getUid()).child("meals");
 
                 if (isHistoryView) {
-                    // Log as NEW meal for today
                     String name = mealNameInput.getText().toString();
                     if (name.isEmpty()) name = "Quick Add Meal";
-
-                    DatabaseReference userMealsRef = FirebaseDatabase.getInstance()
-                            .getReference("users").child(currentUser.getUid()).child("meals");
 
                     Meal meal = new Meal(name, fetchedCalories, fetchedProtein, fetchedCarbs, fetchedFat, System.currentTimeMillis());
                     userMealsRef.push().setValue(meal)
@@ -161,12 +188,18 @@ public class ResultFragment extends Fragment {
                 } else {
                     if (currentMealId != null) {
                         String customName = mealNameInput.getText().toString().trim();
+                        DatabaseReference mealRef = userMealsRef.child(currentMealId);
+
                         if (!customName.isEmpty()) {
-                            DatabaseReference userMealsRef = FirebaseDatabase.getInstance()
-                                    .getReference("users").child(currentUser.getUid()).child("meals");
-                            userMealsRef.child(currentMealId).child("name").setValue(customName);
+                            mealRef.child("name").setValue(customName);
                         }
-                        Toast.makeText(getContext(), "Meal Updated!", Toast.LENGTH_SHORT).show();
+
+                        mealRef.child("calories").setValue(fetchedCalories);
+                        mealRef.child("protein").setValue(fetchedProtein);
+                        mealRef.child("carbs").setValue(fetchedCarbs);
+                        mealRef.child("fat").setValue(fetchedFat);
+
+                        Toast.makeText(getContext(), "Meal Saved!", Toast.LENGTH_SHORT).show();
                         updateStreak();
                     }
                 }
@@ -195,6 +228,16 @@ public class ResultFragment extends Fragment {
         return view;
     }
 
+    private void updateNutritionUI() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                calorieTextView.setText(String.valueOf(fetchedCalories));
+                proteinTextView.setText(fetchedProtein + "g");
+                carbsTextView.setText(fetchedCarbs + "g");
+                fatTextView.setText(fetchedFat + "g");
+            });
+        }
+    }
 
     private void analyzeImageWithGPT(Uri imageUri) {
         new Thread(() -> {
@@ -305,12 +348,14 @@ public class ResultFragment extends Fragment {
                     fetchedCarbs = (int) savedMeal.getCarbs();
                     fetchedFat = (int) savedMeal.getFat();
 
+                    baseCalories = fetchedCalories;
+                    baseProtein = fetchedProtein;
+                    baseCarbs = fetchedCarbs;
+                    baseFat = fetchedFat;
+
                     if (getActivity() != null) {
                         requireActivity().runOnUiThread(() -> {
-                            calorieTextView.setText(String.valueOf(fetchedCalories));
-                            proteinTextView.setText(fetchedProtein + "g");
-                            carbsTextView.setText(fetchedCarbs + "g");
-                            fatTextView.setText(fetchedFat + "g");
+                            updateNutritionUI();
                             setButtonsEnabled(true);
                         });
                     }
@@ -323,7 +368,6 @@ public class ResultFragment extends Fragment {
 
     private void saveFeedbackToFirebase(boolean isLike) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
         if (currentUser == null) {
             Toast.makeText(getContext(), "Please log in to save feedback.", Toast.LENGTH_SHORT).show();
             return;
@@ -378,43 +422,35 @@ public class ResultFragment extends Fragment {
 
                 String today = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(new java.util.Date());
 
-                if (stats.lastLogDate.equals(today)) {
-                    return;
-                }
+                if (stats.lastLogDate.equals(today)) return;
 
-                // Calculate yesterday's date
                 java.util.Calendar cal = java.util.Calendar.getInstance();
                 cal.add(java.util.Calendar.DATE, -1);
                 String yesterday = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(cal.getTime());
 
                 if (stats.lastLogDate.equals(yesterday)) {
-                    // Streak continues!
                     stats.currentStreak++;
                 } else {
-                    // Streak broken (missed more than 1 day) or first time
                     stats.currentStreak = 1;
                 }
 
-                // Update other stats
                 stats.totalDaysLogged++;
                 if (stats.currentStreak > stats.longestStreak) {
                     stats.longestStreak = stats.currentStreak;
                 }
                 stats.lastLogDate = today;
 
-                // Save back to Firebase
                 statsRef.setValue(stats);
 
-                // CHECK FOR CELEBRATION
-                if (stats.currentStreak % 7 == 0) { // Every 7 days
+                if (stats.currentStreak > 0 && stats.currentStreak % 7 == 0) {
                     showCelebrationDialog(stats.currentStreak);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
+
     private void showCelebrationDialog(int days) {
         if (getActivity() == null) return;
         getActivity().runOnUiThread(() -> {

@@ -235,7 +235,8 @@ public class HomeFragment extends Fragment {
         });
 
         viewBadgesButton.setOnClickListener(v ->
-                Toast.makeText(getContext(), "Badges feature coming soon!", Toast.LENGTH_SHORT).show()
+                NavHostFragment.findNavController(HomeFragment.this)
+                        .navigate(R.id.action_HomeFragment_to_BadgesFragment)
         );
 
         return view;

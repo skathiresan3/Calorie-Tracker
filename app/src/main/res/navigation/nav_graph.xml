@@ -105,4 +105,14 @@
             app:destination="@id/resultFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/BadgesFragment"
+        android:name="com.example.calorietracker.BadgesFragment"
+        android:label="BadgesFragment"
+        tools:layout="@layout/fragment_badges" />
+
+    <action
+        android:id="@+id/action_HomeFragment_to_BadgesFragment"
+        app:destination="@id/BadgesFragment" />
+
 </navigation>
