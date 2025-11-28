@@ -32,7 +32,7 @@ public class PhotoSelectFragment extends Fragment {
 
 
     public PhotoSelectFragment() {
-        // Required empty public constructor
+        // required empty public constructor
     }
 
     public static PhotoSelectFragment newInstance(String param1, String param2) {

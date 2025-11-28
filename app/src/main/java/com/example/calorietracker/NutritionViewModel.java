@@ -28,7 +28,6 @@ public class NutritionViewModel extends AndroidViewModel {
     private final MutableLiveData<Integer> consumedCarbs = new MutableLiveData<>(0);
     private final MutableLiveData<Integer> consumedFat = new MutableLiveData<>(0);
 
-    // Keep track of the listener so we can remove it if the user changes
     private ValueEventListener mealListener;
     private DatabaseReference userMealsRef;
 
@@ -48,7 +47,6 @@ public class NutritionViewModel extends AndroidViewModel {
     }
 
     public void listenToUserMeals() {
-        // 1. Remove old listener if exists (prevents duplicates)
         if (userMealsRef != null && mealListener != null) {
             userMealsRef.removeEventListener(mealListener);
         }
@@ -71,13 +69,13 @@ public class NutritionViewModel extends AndroidViewModel {
                 int totalCarb = 0;
                 int totalFat = 0;
 
-                // Get Today's Date
+
                 String todayStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
                 for (DataSnapshot mealSnapshot : snapshot.getChildren()) {
                     Meal meal = mealSnapshot.getValue(Meal.class);
                     if (meal != null) {
-                        // 2. Check if the meal is from TODAY
+
                         String mealDateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(meal.getTimestamp()));
 
                         if (todayStr.equals(mealDateStr)) {
