@@ -108,7 +108,6 @@
     <fragment
         android:id="@+id/BadgesFragment"
         android:name="com.example.calorietracker.BadgesFragment"
-        android:label="BadgesFragment"
         tools:layout="@layout/fragment_badges" />
 
     <action

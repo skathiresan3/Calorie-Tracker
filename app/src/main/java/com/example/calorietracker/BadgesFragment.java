@@ -39,9 +39,6 @@ public class BadgesFragment extends Fragment {
         adapter = new BadgesAdapter();
         recyclerView.setAdapter(adapter);
 
-        view.findViewById(R.id.backButton).setOnClickListener(v ->
-                NavHostFragment.findNavController(this).popBackStack()
-        );
 
         loadBadges();
 
